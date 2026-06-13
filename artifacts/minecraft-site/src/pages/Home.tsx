@@ -1,7 +1,9 @@
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { CraftingGame } from "@/components/CraftingGame";
 import { MobClicker } from "@/components/MobClicker";
+import { triggerAchievement } from "@/components/AchievementToast";
 
 const W = "https://minecraft.wiki/images";
 const GH = "https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures";
@@ -50,7 +52,39 @@ const up = {
 
 const px: React.CSSProperties = { fontFamily: "'Press Start 2P', monospace" };
 
+function randomSeed() {
+  return Math.floor(1_000_000_000 + Math.random() * 8_999_999_999);
+}
+
+const SECTION_ACHIEVEMENTS = [
+  { id: "explore",    title: "Getting Wood",       sub: "You explored the terrain.",      icon: `${GH}/item/diamond_pickaxe.png` },
+  { id: "mobs",       title: "Monster Hunter",     sub: "You encountered the dark.",      icon: `${W}/Creeper_JE2.png` },
+  { id: "dimensions", title: "The End?",            sub: "Another dimension discovered.", icon: `${W}/Enderman_JE3.png` },
+  { id: "items",      title: "Treasure",            sub: "Rare loot identified.",          icon: `${GH}/item/diamond.png` },
+  { id: "games",      title: "Taking Inventory",   sub: "You opened the crafting bench.", icon: `${GH}/item/enchanted_book.png` },
+];
+
 export default function Home() {
+  const [seed, setSeed] = useState(randomSeed);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const match = SECTION_ACHIEVEMENTS.find(a => a.id === entry.target.id);
+          if (match) triggerAchievement(match.title, match.sub, match.icon);
+        }
+      },
+      { threshold: 0.25 }
+    );
+    SECTION_ACHIEVEMENTS.forEach(a => {
+      const el = document.getElementById(a.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#0a0d0a] text-white overflow-x-hidden">
       <Navbar />
@@ -117,6 +151,26 @@ export default function Home() {
                   </div>
                 ))}
               </motion.div>
+
+              {/* World seed */}
+              <motion.button
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+                onClick={() => setSeed(randomSeed())}
+                className="mt-5 flex items-center gap-2 group"
+                title="Click to generate a new seed"
+              >
+                <span className="text-white/15 text-[7px] tracking-wider" style={px}>SEED</span>
+                <span className="text-white/20 text-[7px] group-hover:text-[#5caf00] transition-colors" style={px}>{seed}</span>
+                <motion.span
+                  key={seed}
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-white/15 text-[8px] group-hover:text-[#5caf00] transition-colors"
+                >
+                  ↻
+                </motion.span>
+              </motion.button>
             </div>
 
             {/* Steve */}
@@ -310,7 +364,7 @@ export default function Home() {
       </section>
 
       {/* ── ITEMS ─────────────────────────────────────────────────────────── */}
-      <section className="py-24 border-b border-white/5">
+      <section id="items" className="py-24 border-b border-white/5">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-12">
             <p className="text-white/20 text-[9px] tracking-[0.3em] uppercase mb-3" style={px}>Inventory</p>
@@ -340,7 +394,7 @@ export default function Home() {
       </section>
 
       {/* ── GAMES ────────────────────────────────────────────────────────── */}
-      <section className="py-24 border-b border-white/5">
+      <section id="games" className="py-24 border-b border-white/5">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-12">
             <p className="text-white/20 text-[9px] tracking-[0.3em] uppercase mb-3" style={px}>Interactive</p>
