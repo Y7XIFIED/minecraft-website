@@ -1,0 +1,35 @@
+ADD THESE CHNAGES
+
+Trivia quiz — 20 Minecraft questions, timed rounds, score tracking
+Block memory match — flip pixel-art block cards to find pairs
+Maze generator — procedural pixel maze you navigate with arrow keys
+Pixel art canvas — draw in Minecraft's colour palette, block by block
+Inventory drag-and-drop — arrange items in a real hotbar layout
+Enchanting simulator — combine items + lapis to generate random enchantments
+Mob quiz — guess the mob from a silhouette
+Ore depth chart — interactive slider showing which ores spawn at what Y level
+Build calculator — enter dimensions, get how many blocks you need
+Potion brewer — mix ingredients to discover potion effects
+
+Day/night cycle background — sky shifts from dawn to dusk based on your real local time
+Parallax scrolling — blocks drift at different speeds as you scroll
+Pixel rain — falling pixel-art rain on scroll/idle
+Block break animation — click any block on the page to "mine" it with crack stages
+Biome-themed sections — each section has a faint biome-matching background tint
+Torch flicker — animated pixel torches in the margins that flicker realistically
+Animated mob walk cycles — Creeper/Zombie that actually walks across the screen
+Firework burst — click the CTA button and pixel fireworks explode
+Steve idle animation — Steve blinks and shifts weight on the hero
+Dimension portal shimmer — portal-like warp effect on The Nether/End cards
+
+Changelog section — real patch notes from 1.21.5 formatted as in-game splash text
+Biome encyclopaedia — expandable cards for all 60+ biomes with real screenshots
+Recipe book — searchable full Minecraft recipe reference
+Mob spawning conditions — filterable table of mob behaviours, drops, spawn biomes
+Item compendium — search any of the 400+ items with stats and descriptions
+Speedrun timer widget — start/stop timer styled as in-game F3 debug screen
+F3 debug overlay — toggle a real-looking F3 HUD showing fake coords + FPS
+Splash text rotator — the random yellow splash texts from the Minecraft title screen
+Music disc player — list of all 15 music discs with short descriptions and mood
+Skin viewer — type any username and render their Minecraft skin in 3D (via mc-heads)
+Social & Personalisation

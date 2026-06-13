@@ -3,6 +3,25 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { CraftingGame } from "@/components/CraftingGame";
 import { MobClicker } from "@/components/MobClicker";
+import { TriviaQuiz } from "@/components/TriviaQuiz";
+import { BlockMemoryMatch } from "@/components/BlockMemoryMatch";
+import { MazeGame } from "@/components/MazeGame";
+import { PixelArtCanvas } from "@/components/PixelArtCanvas";
+import { InventoryHotbar } from "@/components/InventoryHotbar";
+import { EnchantingSimulator } from "@/components/EnchantingSimulator";
+import { MobSilhouetteQuiz } from "@/components/MobSilhouetteQuiz";
+import { OreDepthChart } from "@/components/OreDepthChart";
+import { BuildCalculator } from "@/components/BuildCalculator";
+import { PotionBrewer } from "@/components/PotionBrewer";
+import { SpeedrunTimer } from "@/components/SpeedrunTimer";
+import { MusicDiscPlayer } from "@/components/MusicDiscPlayer";
+import { F3Overlay } from "@/components/F3Overlay";
+import { SkinViewer } from "@/components/SkinViewer";
+import { ChangelogSection } from "@/components/ChangelogSection";
+import { BiomeEncyclopedia } from "@/components/BiomeEncyclopedia";
+import { RecipeBook } from "@/components/RecipeBook";
+import { MobSpawnTable } from "@/components/MobSpawnTable";
+import { ItemCompendium } from "@/components/ItemCompendium";
 
 const W = "https://minecraft.wiki/images";
 const GH = "https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures";
@@ -142,21 +161,133 @@ function SectionHeading({ label, title }: { label: string; title: string }) {
   );
 }
 
+function getSkyGradient(): string {
+  const h = new Date().getHours() + new Date().getMinutes() / 60;
+  if (h >= 5.5 && h < 8)   return "linear-gradient(to bottom, #1a0806 0%, #3a1a0a 30%, #0d1205 100%)";
+  if (h >= 8   && h < 12)  return "linear-gradient(to bottom, #051428 0%, #0a2248 30%, #0a0d0a 100%)";
+  if (h >= 12  && h < 17)  return "linear-gradient(to bottom, #062065 0%, #0e3580 35%, #0a0d0a 100%)";
+  if (h >= 17  && h < 20)  return "linear-gradient(to bottom, #2a0e04 0%, #4a1e0a 30%, #0a0d0a 100%)";
+  return "linear-gradient(to bottom, #02040a 0%, #050810 35%, #0a0d0a 100%)";
+}
+
+function TorchFlicker({ side = "left" }: { side?: "left" | "right" }) {
+  return (
+    <motion.div
+      className={`absolute top-1/2 -translate-y-1/2 ${side === "left" ? "-left-8" : "-right-8"} hidden xl:flex flex-col items-center`}
+    >
+      <motion.div
+        className="w-1 h-6 bg-[#5caf00]/40"
+        style={{ imageRendering: "pixelated" }}
+      />
+      <motion.div
+        className="w-2 h-2"
+        animate={{ opacity: [1, 0.6, 1, 0.8, 1], scale: [1, 1.1, 0.95, 1.05, 1], backgroundColor: ["#fcbe04","#ff8800","#fcbe04","#ffcc00","#fcbe04"] }}
+        transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="w-3 h-0.5 mt-px"
+        animate={{ opacity: [0.4, 0.7, 0.3, 0.6, 0.4] }}
+        transition={{ duration: 0.8, repeat: Infinity }}
+        style={{ backgroundColor: "#fcbe0444" }}
+      />
+    </motion.div>
+  );
+}
+
+function FireworkBurst({ x, y, active }: { x: number; y: number; active: boolean }) {
+  const particles = Array.from({ length: 16 }, (_, i) => ({
+    angle: (i / 16) * Math.PI * 2,
+    dist:  60 + Math.random() * 40,
+    color: ["#5caf00","#fcbe04","#ff8800","#ffffff","#4488ff","#cc44ff"][i % 6],
+  }));
+  if (!active) return null;
+  return (
+    <div className="pointer-events-none fixed" style={{ left: x, top: y, zIndex: 999 }}>
+      {particles.map((p, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 rounded-sm"
+          style={{ backgroundColor: p.color }}
+          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+          animate={{
+            x: Math.cos(p.angle) * p.dist,
+            y: Math.sin(p.angle) * p.dist,
+            opacity: 0, scale: 0,
+          }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.01 }}
+        />
+      ))}
+    </div>
+  );
+}
+
+const GAME_TABS = [
+  { id: "crafting",   label: "Crafting Table" },
+  { id: "clicker",    label: "Mob Clicker" },
+  { id: "trivia",     label: "Trivia Quiz" },
+  { id: "memory",     label: "Memory Match" },
+  { id: "maze",       label: "Maze" },
+  { id: "pixelart",   label: "Pixel Art" },
+  { id: "mobquiz",    label: "Mob Quiz" },
+  { id: "potion",     label: "Potion Brewer" },
+  { id: "enchanting", label: "Enchanting" },
+  { id: "hotbar",     label: "Hotbar" },
+  { id: "ore",        label: "Ore Depths" },
+  { id: "buildcalc",  label: "Build Calc" },
+];
+
+const TOOL_TABS = [
+  { id: "changelog",  label: "Changelog" },
+  { id: "biomes",     label: "Biome Guide" },
+  { id: "recipes",    label: "Recipe Book" },
+  { id: "mobs",       label: "Mob Database" },
+  { id: "items",      label: "Item Compendium" },
+  { id: "music",      label: "Music Discs" },
+  { id: "skin",       label: "Skin Viewer" },
+  { id: "f3",         label: "F3 Debug" },
+  { id: "speedrun",   label: "Speedrun Timer" },
+];
+
 export default function Home() {
   const [seed, setSeed] = useState(randomSeed);
   const [splashIdx, setSplashIdx] = useState(0);
+  const [gameTab, setGameTab]   = useState("crafting");
+  const [toolTab, setToolTab]   = useState("changelog");
+  const [firework, setFirework] = useState<{ x: number; y: number; key: number } | null>(null);
+
+  const skyGradient = getSkyGradient();
 
   useEffect(() => {
     const t = setInterval(() => setSplashIdx(i => (i + 1) % SPLASHES.length), 3500);
     return () => clearInterval(t);
   }, []);
 
+  function triggerFirework(e: React.MouseEvent) {
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    setFirework({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, key: Date.now() });
+    setTimeout(() => setFirework(null), 1000);
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0d0a] text-white overflow-x-hidden">
       <Navbar />
 
+      {/* Firework burst overlay */}
+      {firework && <FireworkBurst key={firework.key} x={firework.x} y={firework.y} active />}
+
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="min-h-screen flex items-center border-b border-white/5">
+      <section className="min-h-screen flex items-center border-b border-white/5 relative overflow-hidden"
+        style={{ background: skyGradient }}>
+        {/* Stars (night only) */}
+        {new Date().getHours() >= 20 || new Date().getHours() < 6
+          ? Array.from({ length: 30 }).map((_, i) => (
+              <motion.div key={i} className="absolute rounded-full bg-white"
+                style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 50}%`, width: 1 + (i % 2), height: 1 + (i % 2) }}
+                animate={{ opacity: [0.3, 1, 0.3] }}
+                transition={{ duration: 2 + i * 0.3, repeat: Infinity, delay: i * 0.1 }}
+              />
+            ))
+          : null}
         <div className="max-w-6xl mx-auto px-6 w-full pt-14">
           <div className="flex flex-col lg:flex-row items-center gap-16 py-24">
 
@@ -281,10 +412,10 @@ export default function Home() {
 
       {/* ── MARQUEE ──────────────────────────────────────────────────────── */}
       <div className="border-b border-white/5 py-3 overflow-hidden bg-white/[0.015]">
-        <div className="flex gap-12 animate-marquee whitespace-nowrap">
-          {[...SPLASHES, ...SPLASHES].map((s, i) => (
-            <span key={i} className="text-[7px] text-white/15 italic shrink-0" style={px}>
-              ✦ {s}
+        <div className="flex gap-16 animate-marquee whitespace-nowrap">
+          {Array.from({ length: 28 }).map((_, i) => (
+            <span key={i} className="text-[7px] text-white/20 italic shrink-0 tracking-[0.3em]" style={px}>
+              ✦ Y7XIFIED
             </span>
           ))}
         </div>
@@ -530,27 +661,100 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── GAMES ────────────────────────────────────────────────────────── */}
-      <section id="games" className="py-24 border-b border-white/5">
+      {/* ── GAMES HUB ────────────────────────────────────────────────────── */}
+      <section id="games" className="py-24 border-b border-white/5 relative" style={{ background: "linear-gradient(to bottom, transparent, rgba(10,20,40,0.15), transparent)" }}>
+        <TorchFlicker side="left" />
+        <TorchFlicker side="right" />
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeading label="Interactive" title="Play within the page." />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-px border border-white/5">
-            <motion.div
-              variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }}
-              className="p-8 bg-white/[0.02]"
-            >
-              <p className="text-white/20 text-[8px] uppercase tracking-widest mb-6" style={px}>Crafting Bench</p>
-              <CraftingGame />
-            </motion.div>
-            <motion.div
-              variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }}
-              className="p-8 bg-white/[0.02] border-t lg:border-t-0 lg:border-l border-white/5"
-            >
-              <p className="text-white/20 text-[8px] uppercase tracking-widest mb-6" style={px}>Mob Eliminator</p>
-              <MobClicker />
-            </motion.div>
+          {/* Tab bar */}
+          <div className="flex gap-1 overflow-x-auto pb-2 mb-6 scrollbar-thin border-b border-white/5">
+            {GAME_TABS.map(t => (
+              <motion.button
+                key={t.id}
+                onClick={() => setGameTab(t.id)}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className={`shrink-0 px-4 py-2 text-[6px] transition-all ${gameTab === t.id ? "text-[#5caf00] border-b-2 border-[#5caf00]" : "text-white/30 hover:text-white/60 border-b-2 border-transparent"}`}
+                style={px}
+              >
+                {t.label}
+              </motion.button>
+            ))}
           </div>
+
+          {/* Game content */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={gameTab}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="border border-white/5 p-8 bg-white/[0.015] min-h-96"
+            >
+              {gameTab === "crafting"   && <CraftingGame />}
+              {gameTab === "clicker"    && <MobClicker />}
+              {gameTab === "trivia"     && <TriviaQuiz />}
+              {gameTab === "memory"     && <BlockMemoryMatch />}
+              {gameTab === "maze"       && <MazeGame />}
+              {gameTab === "pixelart"   && <PixelArtCanvas />}
+              {gameTab === "mobquiz"    && <MobSilhouetteQuiz />}
+              {gameTab === "potion"     && <PotionBrewer />}
+              {gameTab === "enchanting" && <EnchantingSimulator />}
+              {gameTab === "hotbar"     && <InventoryHotbar />}
+              {gameTab === "ore"        && <OreDepthChart />}
+              {gameTab === "buildcalc"  && <BuildCalculator />}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </section>
+
+      {/* ── TOOLS & INFO ──────────────────────────────────────────────────── */}
+      <section id="tools" className="py-24 border-b border-white/5 relative" style={{ background: "linear-gradient(to bottom, transparent, rgba(20,10,30,0.12), transparent)" }}>
+        <TorchFlicker side="left" />
+        <TorchFlicker side="right" />
+        <div className="max-w-6xl mx-auto px-6">
+          <SectionHeading label="Reference" title="Your in-game companion." />
+
+          {/* Tab bar */}
+          <div className="flex gap-1 overflow-x-auto pb-2 mb-6 scrollbar-thin border-b border-white/5">
+            {TOOL_TABS.map(t => (
+              <motion.button
+                key={t.id}
+                onClick={() => setToolTab(t.id)}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className={`shrink-0 px-4 py-2 text-[6px] transition-all ${toolTab === t.id ? "text-[#5caf00] border-b-2 border-[#5caf00]" : "text-white/30 hover:text-white/60 border-b-2 border-transparent"}`}
+                style={px}
+              >
+                {t.label}
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Tool content */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={toolTab}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="border border-white/5 p-8 bg-white/[0.015] min-h-96"
+            >
+              {toolTab === "changelog" && <ChangelogSection />}
+              {toolTab === "biomes"    && <BiomeEncyclopedia />}
+              {toolTab === "recipes"   && <RecipeBook />}
+              {toolTab === "mobs"      && <MobSpawnTable />}
+              {toolTab === "items"     && <ItemCompendium />}
+              {toolTab === "music"     && <MusicDiscPlayer />}
+              {toolTab === "skin"      && <SkinViewer />}
+              {toolTab === "f3"        && <F3Overlay />}
+              {toolTab === "speedrun"  && <SpeedrunTimer />}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
@@ -615,6 +819,7 @@ export default function Home() {
               transition={{ delay: 0.35, type: "spring", stiffness: 260, damping: 20 }}
               whileHover={{ scale: 1.06, backgroundColor: "#6cc400" }}
               whileTap={{ scale: 0.97 }}
+              onClick={triggerFirework}
             >
               Play for Free
             </motion.a>

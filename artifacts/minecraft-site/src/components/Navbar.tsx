@@ -6,6 +6,8 @@ const NAV_LINKS = [
   { label: "Explore",    href: "#explore" },
   { label: "Mobs",       href: "#mobs" },
   { label: "Dimensions", href: "#dimensions" },
+  { label: "Games",      href: "#games" },
+  { label: "Tools",      href: "#tools" },
 ];
 
 const letters = "MINECRAFT".split("");
