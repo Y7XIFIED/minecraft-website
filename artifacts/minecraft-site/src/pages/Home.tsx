@@ -68,11 +68,10 @@ export default function Home() {
 
               <motion.h1
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                className="text-5xl lg:text-7xl leading-none mb-8 text-white"
+                className="text-5xl lg:text-7xl leading-none mb-8"
                 style={px}
               >
-                Mine<br />
-                <span className="text-[#5caf00]">craft</span>
+                <span className="text-white">Mine</span><span className="text-[#5caf00]">craft</span>
               </motion.h1>
 
               <motion.p
@@ -367,7 +366,7 @@ export default function Home() {
       {/* ── FOOTER ───────────────────────────────────────────────────────── */}
       <footer className="py-8 border-t border-white/5">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="text-[8px] text-white/20" style={px}>Minecraft Tribute</span>
+          <span className="text-[8px] text-white/20" style={px}>Developed by <span className="text-white/40">Y7XIFIED</span></span>
           <span className="text-[7px] text-white/15 text-center">Not an official Minecraft product. Not affiliated with Mojang or Microsoft.</span>
           <div className="flex gap-6">
             {["Wiki", "Forums", "Merch"].map((l) => (
