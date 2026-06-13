@@ -5,12 +5,12 @@ const W = "https://minecraft.wiki/images";
 const GH = "https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures";
 
 const MOBS = [
-  { name: "Creeper",  tag: "Hostile",  img: `${W}/Creeper_JE2.png`,      desc: "Explodes without warning.",       hp: 20,  dmg: "Fatal",      glow: "#3a5c3a" },
-  { name: "Enderman", tag: "Neutral",  img: `${W}/Enderman_JE3.png`,     desc: "Teleports. Never make eye contact.", hp: 40,  dmg: "3.5 hearts", glow: "#2d1f4a" },
-  { name: "Zombie",   tag: "Hostile",  img: `${W}/Zombie_JE3_BE2.png`,   desc: "Relentless. Burns in sunlight.",   hp: 20,  dmg: "2.5 hearts", glow: "#1a3320" },
-  { name: "Skeleton", tag: "Hostile",  img: `${W}/Skeleton_JE2.png`,     desc: "Ranged archer. Deadly at night.",  hp: 20,  dmg: "2 hearts",   glow: "#333" },
-  { name: "Warden",   tag: "Boss",     img: `${W}/Warden_JE1_BE1.png`,   desc: "Blind. Hunts by vibration alone.", hp: 500, dmg: "15+ hearts", glow: "#0d3535" },
-  { name: "Ghast",    tag: "Hostile",  img: `${W}/Ghast_JE1_BE1.png`,    desc: "Fires explosive fireballs.",       hp: 10,  dmg: "Fireball",   glow: "#3a2a1a" },
+  { name: "Creeper",  tag: "Hostile",  img: `${W}/Creeper_JE2.png`,      desc: "Approaches silently before detonating with lethal force.",              hp: 20,  dmg: "Fatal",      glow: "#3a5c3a" },
+  { name: "Enderman", tag: "Neutral",  img: `${W}/Enderman_JE3.png`,     desc: "Teleports at will. Direct eye contact triggers immediate aggression.",   hp: 40,  dmg: "3.5 hearts", glow: "#2d1f4a" },
+  { name: "Zombie",   tag: "Hostile",  img: `${W}/Zombie_JE3_BE2.png`,   desc: "Pursues survivors relentlessly. Susceptible to sunlight exposure.",     hp: 20,  dmg: "2.5 hearts", glow: "#1a3320" },
+  { name: "Skeleton", tag: "Hostile",  img: `${W}/Skeleton_JE2.png`,     desc: "A skilled archer. Exceptionally dangerous in low-light conditions.",    hp: 20,  dmg: "2 hearts",   glow: "#333" },
+  { name: "Warden",   tag: "Boss",     img: `${W}/Warden_JE1_BE1.png`,   desc: "Sightless yet acutely sensitive to vibration. Exhibits extreme lethality.", hp: 500, dmg: "15+ hearts", glow: "#0d3535" },
+  { name: "Ghast",    tag: "Hostile",  img: `${W}/Ghast_JE1_BE1.png`,    desc: "Launches explosive fireballs from considerable aerial range.",           hp: 10,  dmg: "Fireball",   glow: "#3a2a1a" },
 ];
 
 const ITEMS = [
@@ -79,7 +79,7 @@ export default function Home() {
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}
                 className="text-white/40 text-sm leading-8 mb-10 max-w-sm"
               >
-                Build anything. Explore everywhere. Survive the night. An infinite world made entirely of blocks.
+                An infinite world composed entirely of blocks. Construct monumental structures, traverse vast terrain, and endure the perils of darkness.
               </motion.p>
 
               <motion.div
@@ -143,7 +143,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <motion.div variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-12">
             <p className="text-white/20 text-[9px] tracking-[0.3em] uppercase mb-3" style={px}>The World</p>
-            <h2 className="text-2xl text-white" style={px}>Every block matters.</h2>
+            <h2 className="text-2xl text-white" style={px}>Each block serves a purpose.</h2>
           </motion.div>
 
           <motion.div
@@ -165,9 +165,9 @@ export default function Home() {
           {/* Three pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px mt-16 border border-white/5">
             {[
-              { img: `${GH}/item/diamond_pickaxe.png`, title: "Gather", body: "Every block in the world can be broken and collected. Mine ores, chop trees, excavate caves." },
-              { img: `${W}/Crafting_Table_JE4_BE3.png`, title: "Craft",  body: "Combine raw materials in the 3×3 grid to create tools, weapons, machines, and more." },
-              { img: `${GH}/item/diamond_sword.png`,    title: "Survive", body: "Night brings monsters. Build shelter, light torches, forge weapons — and stay alive." },
+              { img: `${GH}/item/diamond_pickaxe.png`, title: "Gather", body: "Every block within the world may be extracted and collected. Mine mineral deposits, harvest timber, and excavate cave systems." },
+              { img: `${W}/Crafting_Table_JE4_BE3.png`, title: "Craft",  body: "Arrange raw materials within the 3×3 crafting grid to produce tools, weapons, mechanical devices, and essential equipment." },
+              { img: `${GH}/item/diamond_sword.png`,    title: "Survive", body: "The onset of night heralds hostile creatures. Construct shelter, maintain illumination, and forge effective weapons to ensure survival." },
             ].map((f) => (
               <motion.div
                 key={f.title}
@@ -189,7 +189,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <motion.div variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-12">
             <p className="text-white/20 text-[9px] tracking-[0.3em] uppercase mb-3" style={px}>Bestiary</p>
-            <h2 className="text-2xl text-white" style={px}>Beware the dark.</h2>
+            <h2 className="text-2xl text-white" style={px}>The dangers of darkness.</h2>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px border border-white/5">
@@ -243,7 +243,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <motion.div variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-12">
             <p className="text-white/20 text-[9px] tracking-[0.3em] uppercase mb-3" style={px}>Dimensions</p>
-            <h2 className="text-2xl text-white" style={px}>Three worlds.</h2>
+            <h2 className="text-2xl text-white" style={px}>Three distinct dimensions.</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -252,21 +252,21 @@ export default function Home() {
                 name: "Overworld",
                 color: "#5caf00",
                 img: "https://mc-heads.net/player/MHF_Steve/300",
-                desc: "Infinite. Procedural. Every seed creates a world unlike any before it.",
+                desc: "Infinite and procedurally generated. Every world seed produces terrain unlike any that preceded it.",
                 tags: ["60+ Biomes", "Infinite terrain", "Day/night cycle"],
               },
               {
                 name: "The Nether",
                 color: "#cc3300",
                 img: `${W}/Ghast_JE1_BE1.png`,
-                desc: "A hellish underworld. Fire, lava, and ancient fortresses built by Piglins.",
+                desc: "A treacherous underworld defined by fire, lava seas, and ancient fortresses constructed by Piglin civilisations.",
                 tags: ["Netherite ore", "Nether Fortresses", "Piglin society"],
               },
               {
                 name: "The End",
                 color: "#8855cc",
                 img: `${W}/Enderman_JE3.png`,
-                desc: "The final frontier. Floating islands, Chorus plants, and the Ender Dragon.",
+                desc: "The ultimate frontier. Desolate floating islands, Chorus plants, and the formidable Ender Dragon await those who arrive.",
                 tags: ["Ender Dragon", "End Cities", "Elytra wings"],
               },
             ].map((d, i) => (
@@ -313,7 +313,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <motion.div variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-12">
             <p className="text-white/20 text-[9px] tracking-[0.3em] uppercase mb-3" style={px}>Inventory</p>
-            <h2 className="text-2xl text-white" style={px}>Legendary items.</h2>
+            <h2 className="text-2xl text-white" style={px}>Items of significance.</h2>
           </motion.div>
 
           <div className="grid grid-cols-8 gap-2">
@@ -350,7 +350,7 @@ export default function Home() {
             />
             <h2 className="text-2xl md:text-3xl text-white mb-5" style={px}>Your world awaits.</h2>
             <p className="text-white/30 text-sm max-w-sm mx-auto leading-7 mb-10">
-              140 million players. Infinite worlds. One blocky adventure that never ends.
+              140 million registered players. An infinite number of worlds. An adventure of boundless scope and enduring significance.
             </p>
             <a
               href="#"
