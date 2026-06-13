@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
+import { CraftingGame } from "@/components/CraftingGame";
+import { MobClicker } from "@/components/MobClicker";
 
 const W = "https://minecraft.wiki/images";
 const GH = "https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures";
@@ -333,6 +335,33 @@ export default function Home() {
                 <span className="text-[6px] text-white/20 group-hover:text-white/50 text-center transition-colors" style={px}>{item.name}</span>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── GAMES ────────────────────────────────────────────────────────── */}
+      <section className="py-24 border-b border-white/5">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mb-12">
+            <p className="text-white/20 text-[9px] tracking-[0.3em] uppercase mb-3" style={px}>Interactive</p>
+            <h2 className="text-2xl text-white" style={px}>Play within the page.</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-px border border-white/5">
+            <motion.div
+              variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }}
+              className="p-8 bg-white/[0.02]"
+            >
+              <p className="text-white/20 text-[8px] uppercase tracking-widest mb-6" style={px}>Crafting Bench</p>
+              <CraftingGame />
+            </motion.div>
+            <motion.div
+              variants={up} initial="hidden" whileInView="visible" viewport={{ once: true }}
+              className="p-8 bg-white/[0.02] border-t lg:border-t-0 lg:border-l border-white/5"
+            >
+              <p className="text-white/20 text-[8px] uppercase tracking-widest mb-6" style={px}>Mob Eliminator</p>
+              <MobClicker />
+            </motion.div>
           </div>
         </div>
       </section>
