@@ -8,11 +8,7 @@ import { BlockMemoryMatch } from "@/components/BlockMemoryMatch";
 import { MazeGame } from "@/components/MazeGame";
 import { PixelArtCanvas } from "@/components/PixelArtCanvas";
 import { InventoryHotbar } from "@/components/InventoryHotbar";
-import { EnchantingSimulator } from "@/components/EnchantingSimulator";
-import { MobSilhouetteQuiz } from "@/components/MobSilhouetteQuiz";
-import { OreDepthChart } from "@/components/OreDepthChart";
 import { BuildCalculator } from "@/components/BuildCalculator";
-import { PotionBrewer } from "@/components/PotionBrewer";
 import { SpeedrunTimer } from "@/components/SpeedrunTimer";
 import { MusicDiscPlayer } from "@/components/MusicDiscPlayer";
 import { F3Overlay } from "@/components/F3Overlay";
@@ -22,7 +18,13 @@ import { BiomeEncyclopedia } from "@/components/BiomeEncyclopedia";
 import { RecipeBook } from "@/components/RecipeBook";
 import { MobSpawnTable } from "@/components/MobSpawnTable";
 import { ItemCompendium } from "@/components/ItemCompendium";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 const W = "https://minecraft.wiki/images";
 const GH = "https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures";
 
@@ -162,12 +164,7 @@ function SectionHeading({ label, title }: { label: string; title: string }) {
 }
 
 function getSkyGradient(): string {
-  const h = new Date().getHours() + new Date().getMinutes() / 60;
-  if (h >= 5.5 && h < 8)   return "linear-gradient(to bottom, #1a0806 0%, #3a1a0a 30%, #0d1205 100%)";
-  if (h >= 8   && h < 12)  return "linear-gradient(to bottom, #051428 0%, #0a2248 30%, #0a0d0a 100%)";
-  if (h >= 12  && h < 17)  return "linear-gradient(to bottom, #062065 0%, #0e3580 35%, #0a0d0a 100%)";
-  if (h >= 17  && h < 20)  return "linear-gradient(to bottom, #2a0e04 0%, #4a1e0a 30%, #0a0d0a 100%)";
-  return "linear-gradient(to bottom, #02040a 0%, #050810 35%, #0a0d0a 100%)";
+  return "linear-gradient(to bottom, #000000 0%, #050505 50%, #000000 100%)";
 }
 
 function TorchFlicker({ side = "left" }: { side?: "left" | "right" }) {
@@ -221,19 +218,15 @@ function FireworkBurst({ x, y, active }: { x: number; y: number; active: boolean
   );
 }
 
-const GAME_TABS = [
-  { id: "crafting",   label: "Crafting Table" },
-  { id: "clicker",    label: "Mob Clicker" },
-  { id: "trivia",     label: "Trivia Quiz" },
-  { id: "memory",     label: "Memory Match" },
-  { id: "maze",       label: "Maze" },
-  { id: "pixelart",   label: "Pixel Art" },
-  { id: "mobquiz",    label: "Mob Quiz" },
-  { id: "potion",     label: "Potion Brewer" },
-  { id: "enchanting", label: "Enchanting" },
-  { id: "hotbar",     label: "Hotbar" },
-  { id: "ore",        label: "Ore Depths" },
-  { id: "buildcalc",  label: "Build Calc" },
+const GAMES = [
+  { id: "crafting", label: "Crafting Table", desc: "Combine items to craft new tools and explore recipes.", icon: `${W}/Crafting_Table_JE4_BE3.png` },
+  { id: "clicker", label: "Mob Clicker", desc: "Quickly click mobs to earn points before the timer runs out.", icon: `${W}/Zombie_JE3_BE2.png` },
+  { id: "trivia", label: "Trivia Quiz", desc: "Test your Minecraft knowledge with challenging questions.", icon: `${GH}/item/enchanted_book.png` },
+  { id: "memory", label: "Memory Match", desc: "Find the matching block pairs in this classic memory game.", icon: `${W}/Grass_Block_JE7_BE6.png` },
+  { id: "maze", label: "Maze", desc: "Navigate your way through the deep dark underground maze.", icon: `${GH}/item/ender_pearl.png` },
+  { id: "pixelart", label: "Pixel Art", desc: "Express your creativity and draw your own blocky pixel art.", icon: `${GH}/item/painting.png` },
+  { id: "hotbar", label: "Inventory Hotbar", desc: "Practice quick-switching and managing your hotbar slots.", icon: `${GH}/item/diamond_sword.png` },
+  { id: "buildcalc", label: "Build Calc", desc: "Calculate exact block requirements for your next big build.", icon: `${GH}/block/bricks.png` },
 ];
 
 const TOOL_TABS = [
@@ -251,7 +244,6 @@ const TOOL_TABS = [
 export default function Home() {
   const [seed, setSeed] = useState(randomSeed);
   const [splashIdx, setSplashIdx] = useState(0);
-  const [gameTab, setGameTab]   = useState("crafting");
   const [toolTab, setToolTab]   = useState("changelog");
   const [firework, setFirework] = useState<{ x: number; y: number; key: number } | null>(null);
 
@@ -278,16 +270,6 @@ export default function Home() {
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="min-h-screen flex items-center border-b border-white/5 relative overflow-hidden"
         style={{ background: skyGradient }}>
-        {/* Stars (night only) */}
-        {new Date().getHours() >= 20 || new Date().getHours() < 6
-          ? Array.from({ length: 30 }).map((_, i) => (
-              <motion.div key={i} className="absolute rounded-full bg-white"
-                style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 50}%`, width: 1 + (i % 2), height: 1 + (i % 2) }}
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 2 + i * 0.3, repeat: Infinity, delay: i * 0.1 }}
-              />
-            ))
-          : null}
         <div className="max-w-6xl mx-auto px-6 w-full pt-14">
           <div className="flex flex-col lg:flex-row items-center gap-16 py-24">
 
@@ -555,7 +537,7 @@ export default function Home() {
               },
               {
                 name: "The Nether",
-                color: "#cc3300",
+                color: "#ffffff",
                 img: `${W}/Ghast_JE1_BE1.png`,
                 desc: "A treacherous underworld defined by fire, lava seas, and ancient fortresses constructed by Piglin civilisations.",
                 tags: ["Netherite ore", "Nether Fortresses", "Piglin society"],
@@ -668,46 +650,48 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <SectionHeading label="Interactive" title="Play within the page." />
 
-          {/* Tab bar */}
-          <div className="flex gap-1 overflow-x-auto pb-2 mb-6 scrollbar-thin border-b border-white/5">
-            {GAME_TABS.map(t => (
-              <motion.button
-                key={t.id}
-                onClick={() => setGameTab(t.id)}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className={`shrink-0 px-4 py-2 text-[6px] transition-all ${gameTab === t.id ? "text-[#5caf00] border-b-2 border-[#5caf00]" : "text-white/30 hover:text-white/60 border-b-2 border-transparent"}`}
-                style={px}
-              >
-                {t.label}
-              </motion.button>
+          {/* Game Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+            {GAMES.map((game, i) => (
+              <Dialog key={game.id}>
+                <DialogTrigger asChild>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                    whileHover={{ y: -6, borderColor: "rgba(92,175,0,0.5)" }}
+                    className="group flex flex-col p-6 border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] cursor-pointer transition-colors relative overflow-hidden"
+                  >
+                    <div className="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <img src={game.icon} alt="" style={{ width: 120, height: 120, imageRendering: "pixelated" }} />
+                    </div>
+                    <img src={game.icon} alt={game.label} className="w-10 h-10 mb-4 drop-shadow-lg group-hover:scale-110 transition-transform" style={{ imageRendering: "pixelated" }} />
+                    <h3 className="text-white text-[10px] mb-2 z-10" style={px}>{game.label}</h3>
+                    <p className="text-white/40 text-[10px] leading-relaxed z-10">{game.desc}</p>
+                  </motion.div>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl bg-[#0a0d0a] border-white/10 text-white p-0 overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)]">
+                  <DialogHeader className="p-6 border-b border-white/5 bg-white/[0.02]">
+                    <DialogTitle className="text-[12px] flex items-center gap-3" style={px}>
+                      <img src={game.icon} alt={game.label} className="w-6 h-6" style={{ imageRendering: "pixelated" }} />
+                      {game.label}
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="p-6 overflow-y-auto max-h-[80vh] custom-scrollbar">
+                    {game.id === "crafting"   && <CraftingGame />}
+                    {game.id === "clicker"    && <MobClicker />}
+                    {game.id === "trivia"     && <TriviaQuiz />}
+                    {game.id === "memory"     && <BlockMemoryMatch />}
+                    {game.id === "maze"       && <MazeGame />}
+                    {game.id === "pixelart"   && <PixelArtCanvas />}
+                    {game.id === "hotbar"     && <InventoryHotbar />}
+                    {game.id === "buildcalc"  && <BuildCalculator />}
+                  </div>
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
-
-          {/* Game content */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={gameTab}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              className="border border-white/5 p-8 bg-white/[0.015] min-h-96"
-            >
-              {gameTab === "crafting"   && <CraftingGame />}
-              {gameTab === "clicker"    && <MobClicker />}
-              {gameTab === "trivia"     && <TriviaQuiz />}
-              {gameTab === "memory"     && <BlockMemoryMatch />}
-              {gameTab === "maze"       && <MazeGame />}
-              {gameTab === "pixelart"   && <PixelArtCanvas />}
-              {gameTab === "mobquiz"    && <MobSilhouetteQuiz />}
-              {gameTab === "potion"     && <PotionBrewer />}
-              {gameTab === "enchanting" && <EnchantingSimulator />}
-              {gameTab === "hotbar"     && <InventoryHotbar />}
-              {gameTab === "ore"        && <OreDepthChart />}
-              {gameTab === "buildcalc"  && <BuildCalculator />}
-            </motion.div>
-          </AnimatePresence>
         </div>
       </section>
 
@@ -760,19 +744,6 @@ export default function Home() {
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
       <section className="py-32 relative overflow-hidden">
-        {/* Subtle animated background dots */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(12)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-px h-px bg-white/10"
-              style={{ left: `${8 + i * 8}%`, top: `${20 + (i % 3) * 20}%` }}
-              animate={{ opacity: [0, 0.6, 0], scale: [0, 2, 0] }}
-              transition={{ duration: 3 + i * 0.4, repeat: Infinity, delay: i * 0.3 }}
-            />
-          ))}
-        </div>
-
         <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 32 }}

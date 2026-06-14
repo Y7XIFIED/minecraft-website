@@ -3,15 +3,15 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const px: React.CSSProperties = { fontFamily: "'Press Start 2P', monospace" };
 
-const W = "https://minecraft.wiki/images";
+const GH = "https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures";
 
 const BLOCK_OPTIONS = [
-  { name: "Cobblestone",  img: `${W}/Cobblestone_JE2_BE2.png` },
-  { name: "Planks",       img: `${W}/Oak_Planks_JE6.png` },
-  { name: "Stone",        img: `${W}/Stone_JE4.png` },
-  { name: "Bricks",       img: `${W}/Bricks_JE2_BE2.png` },
-  { name: "Obsidian",     img: `${W}/Obsidian_JE2.png` },
-  { name: "Grass Block",  img: `${W}/Grass_Block_JE7_BE6.png` },
+  { name: "Cobblestone",  img: `${GH}/block/cobblestone.png` },
+  { name: "Planks",       img: `${GH}/block/oak_planks.png` },
+  { name: "Stone",        img: `${GH}/block/stone.png` },
+  { name: "Bricks",       img: `${GH}/block/bricks.png` },
+  { name: "Obsidian",     img: `${GH}/block/obsidian.png` },
+  { name: "Grass Block",  img: `${GH}/block/grass_block_side.png` },
 ];
 
 type Mode = "filled" | "hollow" | "walls" | "floor";
