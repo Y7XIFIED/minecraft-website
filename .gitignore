@@ -47,3 +47,5 @@ Thumbs.db
 # Local Cache
 .cache/
 .local/
+
+.vercel
