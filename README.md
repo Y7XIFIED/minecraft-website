@@ -46,16 +46,16 @@ https://minecraft-iota-six.vercel.app
 
 ```text
 .
-├── public/              # Static assets and game illustrations
-├── src/                 # Application source code
-│   ├── components/      # UI components (Crafting, Quiz, Clicker, etc.)
-│   ├── hooks/           # Custom utility React hooks
-│   ├── pages/           # Page templates (Home, NotFound)
-│   ├── App.tsx          # Main entry component
-│   └── main.tsx         # Mount entrypoint
-├── package.json         # Build configuration and scripts
-├── tsconfig.json        # TypeScript configuration
-└── vite.config.ts       # Vite bundler parameters
+├── public/
+├── src/
+│   ├── components/
+│   ├── hooks/
+│   ├── pages/
+│   ├── App.tsx
+│   └── main.tsx
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
 ## 💻 Tech Stack
